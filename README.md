@@ -19,10 +19,14 @@
   На каждом сервере настроен https (все http запросы перенаправляются на https). Сертификаты получены на доменное имя execordervk.tech при помощи **cretbot**
   
   Открыты 22, 80, 443 порты.
+  
+  [Ссылка на содержмое Front серверов](https://github.com/BobrovD/vktech.front)
 ## **Backend**
   2 сервера с установленными apache2 + php7.0, php7.0-mysql, php7.0-json, php-memcached, libapache2-mod-php7.0.
   
   Открыты 22, 80, 443 порты.
+  
+  [Ссылка на содержмое Backend серверов](https://github.com/BobrovD/vktech.backend)
 ## **Mysql**
   2 сервера с настроенной репликацией Master + Slave.
   
@@ -34,6 +38,7 @@
 ## **Worker**
   2 сервера для медленных или регулярных задач.
 
+  [Ссылка на содержмое Worker серверов](https://github.com/BobrovD/vktech.worker)
 # А теперь немного подробнее о каждом
 
 #### **DNS-balancer**
