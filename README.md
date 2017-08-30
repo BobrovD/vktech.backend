@@ -13,7 +13,7 @@
   * Memcached server (x2)
   * Worker server (x2)
 ## **DNS-balancer**
-  Взят у DO в аренду и равномерно распределяет запросы к (https://execordervk.tech)[https://execordervk.tech] по доступным **front** серверам.
+  Взят у DO в аренду и равномерно распределяет запросы к [https://execordervk.tech](https://execordervk.tech) по доступным **front** серверам.
 ## **Front**
   2 сервера с установленными на них nginx, в конфиге которых прописан редирект всех .php запросов на upstream из двух **backend** серверов, а вся статика отдаётся с самого **front**
   На каждом сервере настроен https (все http запросы перенаправляются на https). Сертификаты получены на доменное имя execordervk.tech при помощи **cretbot**
