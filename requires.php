@@ -22,3 +22,4 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/func/payment.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/func/payout.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/func/worker.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/func/task.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/func/memcached.php';

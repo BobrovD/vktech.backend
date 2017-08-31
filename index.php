@@ -284,9 +284,79 @@ switch($_GET['r'])
                 echo json_encode($result);
                 exit_with_code(defines\Codes::OK);
                 break;
+            case 'get_global_list':
+                $result['tasks'] = get_tasks_global_list();
+                $result['counter'] = count($result['task_list']);
+                echo json_encode($result);
+                break;
             case 'get_by_id':
-                if(!validate_input_data('int', $inputs['task_id']))
+                if(!validate_input_data('int', $inputs['task_id'])){
+                    exit_with_code(defines\Codes::BAD_REQUEST);
+                }
                 $result = get_task_by_id($inputs['task_id'], $id, $account_type);
+                echo json_encode($result);
+                break;
+            case 'remove':
+                if(!$id){
+                    exit_with_code(defines\Codes::UNAUTHORIZED);
+                }
+                if(!validate_input_data('int', $inputs['task_id'])){
+                    exit_with_code(defines\Codes::BAD_REQUEST);
+                }
+                if(remove_task($inputs['task_id'], $id)){
+                    exit_with_code(defines\Codes::OK);
+                }
+                exit_with_code(defines\Codes::BAD_REQUEST);
+                break;
+            case 'update':
+                if(!$id){
+                    exit_with_code(defines\Codes::UNAUTHORIZED);
+                }
+                $inputs['task_title'] = addslashes($inputs['task_title']);
+                $inputs['task_text'] = addslashes($inputs['task_text']);
+                if(
+                    !validate_input_data('task_title', $inputs['task_title']) ||
+                    !validate_input_data('task_text', $inputs['task_text']) ||
+                    !validate_input_data('summ', $inputs['task_reward'])
+                ){
+                    exit_with_code(defines\Codes::BAD_REQUEST, ['Error' => 'Bad parameter list']);
+                }
+                $balance = get_account_by_id($id)['balance'];
+                $task = get_task_by_id($inputs['task_id']);
+                if($task['customer']['id'] !== $id){
+                    exit_with_code(defines\Codes::BAD_REQUEST);
+                }
+                if($balance < ($inputs['task_reward'] - $task['reward'])){
+                    exit_with_code(defines\Codes::BAD_REQUEST, ['Error' => 'Not enouth money']);
+                }
+                update_task($inputs['task_id'], ['title' => $inputs['task_title'], 'description' => $inputs['task_text'], 'reward' => $inputs['task_reward']]);
+                up_balance($id, $task['reward'] - $inputs['task_reward']);
+                exit_with_code(defines\Codes::OK);
+                break;
+            case 'subscribe':
+                if(!$id || $account_type !== 'executor'){
+                    exit_with_code(defines\Codes::UNAUTHORIZED);
+                }
+                if(!validate_input_data('int', $inputs['task_id'])){
+                    exit_with_code(defines\Codes::BAD_REQUEST);
+                }
+                if(subscribe_on_task($id, $inputs['task_id'])){
+                    exit_with_code(defines\Codes::OK);
+                }
+                exit_with_code(defines\Codes::BAD_REQUEST);
+                break;
+            case 'unsubscribe':
+                if(!$id || $account_type !== 'executor'){
+                    exit_with_code(defines\Codes::UNAUTHORIZED);
+                }
+                if(!validate_input_data('int', $inputs['task_id'])){
+                    exit_with_code(defines\Codes::BAD_REQUEST);
+                }
+                if(unsubscribe_from_task($id, $inputs['task_id'])){
+                    exit_with_code(defines\Codes::OK);
+                }
+                exit_with_code(defines\Codes::BAD_REQUEST);
+                break;
         }
         break;
     case 'status':

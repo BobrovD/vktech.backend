@@ -78,6 +78,7 @@ function exit_with_code($code, $headers = false, $register_query = true)
             header($key . ': ' . $header);
         }
     }
+    header('Server-number: 1');
     http_response_code($code);
     if($register_query)
         register_script_time($_GET['r'].'/'.$_GET['a'], $_SERVER['REQUEST_METHOD'], $time_start);
